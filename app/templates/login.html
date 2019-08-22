@@ -6,7 +6,7 @@
 </head>
 <body>
 <h2>Your Login Details:</h2>
-<form action="" method="post">{% csrf_token %}
+<form action="messagesent" method="post">{% csrf_token %}
 
             <ul>
             <li>Name: <strong>{{ name }}</strong></li>
@@ -20,7 +20,12 @@
             <br>
           <div>
             <label for="mail">Target E-mail:</label>
-            <input type="email" id="mail" name="user_mail">
+            <input type="email" id="mail" name="target_mail">
+          </div>
+            <br>
+            <div>
+            <label for="mail">Your E-mail:</label>
+            <input type="email" id="mail" name="your_mail">
           </div>
             <br>
             <div>

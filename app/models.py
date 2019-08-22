@@ -17,13 +17,14 @@ class UserAccount(models.Model):
 class Inbox(models.Model):
 
     message = models.TextField(max_length=200)
-
+    user_account = models.ForeignKey('UserAccount', related_name='user_inbox', on_delete=models.CASCADE, null=True)
     def __str__(self):
-        return self.message
+        return f"{self.user_account} : {self.message}"
     
 class Outbox(models.Model):
 
     message = models.TextField(max_length=200) 
+    user_account = models.ForeignKey('UserAccount', related_name='user_outbox', on_delete=models.CASCADE, null=True)
     def __str__(self):
         return self.message
     

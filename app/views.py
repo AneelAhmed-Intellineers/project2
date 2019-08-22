@@ -43,29 +43,40 @@ def user_login(request):
 
         return render(request, "login.html",context)
         
-"""
-def send_message(request):
 
+def send_message(request):
+    
     if request.method == 'GET':
+        
         return render(request, "login.html",{})
 
     if request.method == 'POST':
 
-        email = request.POST.get('user_mail')
+        uremail = request.POST.get('your_mail')
+        email = request.POST.get('target_mail')
         message = request.POST.get('user_message')
-        user = UserAccount.objects.get(email=email)
+        user = UserAccount.objects.get(email=uremail)
+        rcv_user = UserAccount.objects.get(email=email)
+        
         outbox = Outbox()
         outbox.message = message
-        outbox.user = UserAccount.objects.get(email=email)
-        print(outbox.user)
+        outbox.user_account = UserAccount.objects.get(email=uremail)
         outbox.save()
         user.outbox = outbox
         user.save()
+        inbox = Inbox()
+        inbox.message = message
+        inbox.user_account = outbox.user_account
+        inbox.save()
+        rcv_user.inbox = inbox
+        rcv_user.save() 
+        outbox = Outbox.objects.filter(user_account=user)
+        
         context = {
-            'name':outbox.user.name,
-            'email':outbox.user.email,
-            'inbox':outbox.user.inbox,
+            'name':user.name,
+            'email':user.email,
+            'inbox':user.inbox,
             'outbox':outbox
         }
-
-        return render(request, 'login.html', {})"""
+        
+        return render(request, 'login.html',context)
